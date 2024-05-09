@@ -1,0 +1,144 @@
+/* Note:Your choice is C IDE */
+#include "stdio.h"
+#include "string.h"
+int flag=1;
+	int m;
+typedef struct
+{ 
+	char number[10];
+	char name[20];
+	char cls[20];
+	int chinese;
+	int math;
+	int english;
+	int all;
+	int sum;   
+}student;
+
+typedef struct{
+	int n;
+	int maxsize;
+	student *data;
+}list;
+
+list* init(int size)
+{ 
+	list *l;
+	l=(list*)malloc(sizeof(list));
+	l->data=(student*)malloc(sizeof(student)*size);
+	l->n=0;
+	l->maxsize=size;
+	return l;
+}
+
+void insert(list *l)
+{ 
+	student st;
+	if(l->n==l->maxsize) return -1;
+	printf("请输入 学号 姓名 班级 语文 数学 英语 综合成绩以空格分开:\n");
+	scanf("%s%s%s%d%d%d%d",st.number,st.name,st.cls,&st.chinese,&st.math,&st.english,&st.all);
+	st.sum=st.chinese+st.math+st.english+st.all;
+	l->data[l->n]=st;
+	l->n++;
+}
+int findname(list *l)
+{
+	char name[20];
+	int i;
+	printf("输入姓名");
+	scanf("%s",&name);
+	for(i=0;i<l->n;i++)
+	if(strcmp(l->data[i].name,name)==0)
+	return i;
+  return -1;
+}
+void showone(list *l,int i)
+{
+	printf("%s\t%s\t%s\t%5d%5d%5d%5d%5d\n",l->data[i].number,l->data[i].name,l->data[i].cls,l->data[i].chinese,l->data[i].math,l->data[i].english,l->data[i].all,l->data[i].sum);
+	}
+
+void show(list *l)
+{
+	int i;
+	printf("学号\t姓名\t班级\t\t语文\t数学\t英语\t综合\t总分\n");
+	for(i=0;i<l->n;i++)
+	printf("%s\t%s\t%s\t\t%3d\t%3d\t%3d\t%3d\t%3d\t\n",l->data[i].number,l->data[i].name,l->data[i].cls,l->data[i].chinese,l->data[i].math,l->data[i].english,l->data[i].all,l->data[i].sum);
+}
+
+void meum()
+{
+	printf("-------学生成绩系统--------\n");
+	printf("输入1插入学生成绩信息\n");
+	printf("输入2展示学生成绩信息\n");
+	printf("输入3查询学生信息\n");
+	printf("输入5删除学生信息\n");
+	printf("输入6修改学生信息\n");
+	printf("输入8排序学生成绩\n");
+	printf("输入0退出程序\n");
+}
+int deletebyname(list *l)
+{
+	
+	int i;
+	i=findname(l);
+	if(i<0)
+	return -1;
+	for(;i<l->n-1;i++)
+	l->data[i]=l->data[i+1];
+	l->n--;
+	printf("删除成功\n");
+	
+}
+int updataname(list *l)
+{
+	student st;
+	int i;
+	i=findname(l);
+	if(i<0) return -1;
+	printf("请输入 学号 姓名 班级 语文 数学 英语 综合成绩以空格分开:\n");
+	scanf("%s%s%s%d%d%d%d",st.number,st.name,st.cls,&st.chinese,&st.math,&st.english,&st.all);
+	st.sum=st.chinese+st.math+st.english+st.all;
+	l->data[i]=st;
+	printf("修改成功\n");
+	
+	
+}
+int count(list *l)
+{
+	student st;
+	int i,j;
+	for(i=l->n-1;i>0;i--){
+		for(j=0;j<i;j++){
+			if(l->data[j].sum<l->data[j+1].sum){
+			st=l->data[j];
+			l->data[j]=l->data[j+1];
+			l->data[j+1]=st;}
+	}}
+	
+}
+void main()
+{ int x;
+	list *l;
+	l=init(88);
+	while(flag){
+		meum();
+		printf("请输入数字");
+		scanf("%d",&m);
+		switch(m){
+		case 1: insert(l);break;
+		case 2: show(l);break;
+		case 3: x=findname(l);
+		case 4: showone(l,x);break;
+		case 5: deletebyname(l);break;
+		case 6: updataname(l);
+		case 7: show(l);break;
+		case 8: count(l);
+		case 9: show(l);break;
+		default:{
+			printf("退出");
+			flag=0;
+			break;
+		}
+	}
+	}
+}
